@@ -8,11 +8,11 @@ CORS(app)
 
 # Connect to PostgreSQL
 conn = psycopg2.connect(
-    host="111.125.208.38",
-    database="pomodoro",
-    user="postgres",
-    password="12345",
-    port="5432"
+    host="",
+    database="",
+    user="",
+    password="",
+    port=""
 )
 cursor = conn.cursor()
 
