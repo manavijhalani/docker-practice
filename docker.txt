@@ -1,0 +1,93 @@
+docker runs images and exposes them to outside world by means of ports
+for eg: the default port of llama is 11434 and that of postgres is 5432 
+it is then exposed to a port on our system to outside world
+suppose I am running two version of postgress in containers then both will run on 5432 which can lead to a conflict on the port..
+What we can do is expose both versions to different ports so that there is no conflict,one 5432 to 5000 port and other to 4000 port(map them to a certain port on host machine)
+ docker run --name my-mongo1 -p 4000:27017 mongo (4000 is our port on which we want it to run and 27017 is the default port of mongo)
+
+
+docker v/s vm
+vm is very heavy...it is running an entore os on top of your os
+docker runs your application on the system...doesn't make use /include entire kernel
+docker=application+ enough config + bare min os layer to run it
+docker is super fast
+
+docker pull postgres
+docker pull postgres:13.8 (specifying the version(called tag): if not specified then the latest tag is pulled)
+docker pull ollama
+docker run ollama
+docker pull mistral/TinyLlama
+docker run mistral
+docker run -d----In Docker, the -d flag stands for detached mode. When you run a container with -d, it runs in the background instead of attaching to the terminal. This is useful when you want to start a container and continue using the terminal without keeping the container's logs displayed.(basically keeps your terminal free)
+docker container stop {container name}
+docker container -ls shows all running containers
+docker container -ls -a shows all containers, running or not
+docker container  prune will remove all stopped containers (images still will be there but conatiners and also the data in those containers will be removed)
+docker volume ls shows all volumes present  (this volumes are virtual, some disk space is allotted to keeping them ,they cant be accessed directly, there are intricate ways)
+docker image ls gives all images present that you have pulled
+docker logs {container name} gives the logs of that particular container, particularly helpful for debugging and checking status of container
+-e is for providing environment variables
+
+If you're asking about **file extensions** related to Docker, here are some common ones:
+
+1. **Dockerfile** (No extension) – The main file used to define a Docker image.
+2. **`.tar`** – When saving or exporting Docker images/containers.
+3. **`.yml` / `.yaml`** – Docker Compose files (`docker-compose.yml`).
+4. **`.dockerignore`** – Used to specify files to exclude from the Docker build context.
+
+
+(each image be that postgres or mongo or llama has specific documentation on docker hub and we have to go there to use more specific commands related to that particular image)
+eg:docker run --name my-mongo-one -d mongo
+
+docker pull mongo-express eg of container talking to a container
+
+docker run -d `   backtick to type other specifications like password , -p onto the next line
+
+Docker Compose is a tool that allows you to define and run multi-container Docker applications using a YAML file (docker-compose.yml). Instead of running multiple docker run commands, you can define all your services, networks, and volumes in a single file and start everything with one command.
+(we wont need to do what we did with running mongo and mongo express together with different commands (long) to run)
+
+We can use an extension called indent-rainbow to properly check indentation of yaml file (in which indentation is very necessary)...it doesn't create the indentation rather it colors the different indentation to make use aware about how many indents have been used 
+
+In compose yaml file we are not going to create any new network...docker compose automatically creates new network and puts all our containers present in the yaml file onto the same network....all the containers present in docker-compose share the same network(you can give a new name to this network but it will remain same for all conatiners present in docker compose)
+
+docker-compose -f filename.yaml up to run the docker compose d
+ocker-compose -f filename.yaml down to stop the container
+can use volumes to store the data from the compose container the volumes under  mongo have a specific path data/db (default path for mongodb--different for postgres, different for MySQL etc) on which the data is mounted, this pathis fixed and specific  for all applications like mongodb,postgres
+including the volume will help in data persistence (data will not disappear on reload/restart of container) (not using volumes is like local storage, using volumes is like having a proper persistent database)
+
+
+
+You can publish your created images either on the docker hub repository or aws container registry
+
+basic docker file for running a python file:
+FROM python:3-alpine3.15 
+WORKDIR /app (avoid only / directory---very sensitive, not a good practice)
+COPY . /app
+RUN pip install -r requirements.txt
+EXPOSE 3000 (the port on which you want image to run)
+CMD python ./index.py
+
+
+docker build -t momo56312/hey-python-flask:0.0.2.RELEASE . (build image)
+docker run -d -p 4000:3000  momo56312/hey-python-flask:0.0.2.RELEASE (test image)
+docker push momo56312/hey-python-flask:0.0.2.RELEASE (push to docker hub)
+
+
+(still a little confused about ports in above part, used 3000 in flask and docker file, can run app on 3000,4000 etch by changing 1st entity to the left of colon)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
